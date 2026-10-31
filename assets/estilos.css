@@ -1,0 +1,53 @@
+/* Dash carga automáticamente todos los archivos de la carpeta assets/ */
+body { font-family: Arial, Helvetica, sans-serif; background: #F4F6F9; margin: 0; color: #262626;
+background-color: #f0f4f8;
+    font-family: Arial, sans-serif; }
+
+.encabezado { background: #1F497D; padding: 22px 40px; }
+.encabezado h1 { color: #FFC000; margin: 0 0 6px 0; font-size: 28px; }
+.encabezado p { color: white; margin: 0; }
+
+.contenido { max-width: 1300px; margin: 0 auto; padding: 20px; }
+.filtro { max-width: 420px; margin-bottom: 16px; }
+.filtro label { font-weight: bold; display: block; margin-bottom: 6px; }
+
+.cuadricula { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.tarjeta {
+    background: white;
+    border-radius: 16px; /* Puntas mucho más redondeadas y modernas */
+    padding: 20px;       /* Mayor espacio interno para que no se vea apretado */
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 
+                0 8px 10px -6px rgba(0, 0, 0, 0.04); /* Sombra difuminada y elegante */
+    border: 1px solid rgba(0, 0, 0, 0.03); /* Un borde sutil ultra fino que define el contorno */
+    margin-bottom: 20px;
+}
+
+.tarjeta h3 { color: #1F497D; margin-top: 4px; }
+
+.pie { color: #6B6B6B; font-size: 12px; text-align: center; margin-top: 16px; }
+
+/* En pantallas pequeñas (celular) los gráficos se apilan en una sola columna */
+@media (max-width: 900px) { .cuadricula { grid-template-columns: 1fr; } }
+
+.encabezado {
+    display: flex;               /* Obliga a poner los elementos uno al lado del otro */
+    flex-direction: row;         /* Dirección horizontal */
+    justify-content: space-between; /* Texto a la izquierda, logo a la derecha */
+    align-items: center;         /* Centra verticalmente ambos elementos */
+    padding: 20px;
+    background-color: #1b365d;   /* Ajusta tu color de fondo azul si es necesario */
+    border-radius: 12px;
+    margin-bottom: 25px;
+    gap: 20px;                   /* Espacio de separación entre el texto y el logo */
+}
+
+.logo-universidad {
+    max-height: 60px;           /* Altura ajustada */
+    width: auto;
+    object-fit: contain;
+    background-color: white;    /* Fondo blanco para contraste */
+    padding: 8px 12px;          /* Espacio interno alrededor del logo */
+    border-radius: 8px;         /* Bordes redondeados sutiles */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Una ligera sombra para elevarlo */
+    flex-shrink: 0;
+}
