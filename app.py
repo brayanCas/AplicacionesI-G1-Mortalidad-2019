@@ -28,42 +28,76 @@ st.set_page_config(
 )
 st.markdown("""
 <style>
-    
-    /* Limitar el ancho del selectbox (filtro) para que no ocupe toda la pantalla */
-    div[data-testid="stSelectbox"] {
-            max-width: 420px !important;
-        }
-    
-    /* 1. Estilo del Encabezado Azul Institucional */
-    .encabezado-personalizado {
-        background-color: #1b365d;
-        color: white;
-        padding: 30px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .encabezado-personalizado h1 {
-        color: #f39c12 !important; /* Color dorado para el título principal */
-        margin-bottom: 10px;
-        font-size: 2rem;
-    }
-    .encabezado-personalizado p {
-        color: #ffffff;
-        margin: 0;
-    }
 
-    /* 2. Redondear y mejorar las Tarjetas (Containers) */
-    div[data-testid="stVerticalBlock"] div[data-testid="stContainer"] {
-        background-color: #ffffff;
-        border-radius: 12px !important;
-        padding: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e1e8ed !important;
-        margin-bottom: 20px;
-    }
+/* Fondo general de la aplicación */
+.stApp {
+    background-color: #f1f3f6;
+}
+
+/* Encabezado institucional */
+.encabezado-personalizado {
+    background-color: #1b365d;
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.encabezado-personalizado h1 {
+    color: #f39c12 !important;
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.encabezado-personalizado p {
+    color: #ffffff;
+    margin: 0;
+}
+
+/* Filtro de departamentos */
+div[data-testid="stSelectbox"] {
+    max-width: 420px !important;
+}
+
+/* TARJETAS DEL DASHBOARD */
+div[class*="st-key-card-"] {
+    background-color: #ffffff !important;
+    border: 1px solid #e8edf3 !important;
+    border-radius: 16px !important;
+
+    padding: 18px !important;
+
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.04),
+        0 8px 20px rgba(0, 0, 0, 0.06) !important;
+
+    margin-bottom: 20px !important;
+
+    transition: all 0.25s ease-in-out;
+}
+
+/* Efecto al pasar el mouse */
+div[class*="st-key-card-"]:hover {
+    box-shadow:
+        0 6px 12px rgba(0, 0, 0, 0.06),
+        0 12px 28px rgba(0, 0, 0, 0.09) !important;
+
+    transform: translateY(-2px);
+}
+
+/* Evitar fondos adicionales en el contenido */
+div[class*="st-key-card-"] [data-testid="stVerticalBlock"] {
+    background-color: transparent;
+}
+
+/* Pie de página */
+footer {
+    visibility: hidden;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -153,39 +187,68 @@ figura_histograma = graficos.crear_histograma(
 )
 
 # ---------------------------------------------------------------------------
-# 6. Cuadrícula de Contenido (Tarjetas con gráficos y tablas)
+# 6. Cuadrícula de contenido (Tarjetas con gráficos y tablas)
 # ---------------------------------------------------------------------------
-col1, col2 = st.columns(2)
+
+col1, col2 = st.columns(2, gap="medium")
 
 with col1:
-    with st.container(border=True):
-        st.plotly_chart(graficos.crear_mapa(tabla_mapa), use_container_width=True)
-        
-    with st.container(border=True):
-        st.plotly_chart(graficos.crear_barras_violentas(tabla_violentas), use_container_width=True)
-        
-    with st.container(border=True):
-        st.plotly_chart(graficos.crear_circular(tabla_menor_mortalidad), use_container_width=True)
+
+    # Mapa de mortalidad
+    with st.container(key="card-mapa"):
+        st.plotly_chart(
+            graficos.crear_mapa(tabla_mapa),
+            use_container_width=True
+        )
+
+    # Ciudades más violentas
+    with st.container(key="card-violencia"):
+        st.plotly_chart(
+            graficos.crear_barras_violentas(tabla_violentas),
+            use_container_width=True
+        )
+
+    # Ciudades con menor mortalidad
+    with st.container(key="card-menor-mortalidad"):
+        st.plotly_chart(
+            graficos.crear_circular(tabla_menor_mortalidad),
+            use_container_width=True
+        )
+
 
 with col2:
-    with st.container(border=True):
+
+    # Principales causas de muerte
+    with st.container(key="card-causas"):
         st.markdown("### 10 principales causas de muerte")
-        # Reemplazo de DataTable por st.dataframe optimizado para Streamlit
+
         st.dataframe(
-            tabla_causas, 
-            use_container_width=True, 
+            tabla_causas,
+            use_container_width=True,
             hide_index=True
         )
-        
-    with st.container(border=True):
-        st.plotly_chart(figura_lineas, use_container_width=True)
-        
-    with st.container(border=True):
-        st.plotly_chart(figura_histograma, use_container_width=True)
 
-# Tarjeta a ancho completo inferior
-with st.container(border=True):
-    st.plotly_chart(graficos.crear_barras_apiladas(tabla_sexo), use_container_width=True)
+    # Muertes por mes
+    with st.container(key="card-lineas"):
+        st.plotly_chart(
+            figura_lineas,
+            use_container_width=True
+        )
+
+    # Muertes por categoría de edad
+    with st.container(key="card-edades"):
+        st.plotly_chart(
+            figura_histograma,
+            use_container_width=True
+        )
+
+
+# Tarjeta inferior a ancho completo
+with st.container(key="card-sexo"):
+    st.plotly_chart(
+        graficos.crear_barras_apiladas(tabla_sexo),
+        use_container_width=True
+    )
 
 # Pie de página
 st.markdown("---")
