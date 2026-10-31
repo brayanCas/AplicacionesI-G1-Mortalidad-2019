@@ -28,6 +28,12 @@ st.set_page_config(
 )
 st.markdown("""
 <style>
+    
+    /* Limitar el ancho del selectbox (filtro) para que no ocupe toda la pantalla */
+    div[data-testid="stSelectbox"] {
+            max-width: 420px !important;
+        }
+    
     /* 1. Estilo del Encabezado Azul Institucional */
     .encabezado-personalizado {
         background-color: #1b365d;
